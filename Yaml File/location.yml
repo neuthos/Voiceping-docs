@@ -1,0 +1,179 @@
+swagger: "2.0"
+openapi: 3.0.0
+info:
+  title: VoicePing Location API
+  description: Location Service for VoicePing Users
+  version: 0.0.3
+servers:
+- url: https://vp-location-staging.herokuapp.com
+  description: STAGING
+- url: https://vp-location-production-prod.herokuapp.com
+  description: Production LIVE
+paths:
+  /request-token:
+    post:
+      tags:
+      - Request Token
+      summary: Request Authorization Token
+      operationId: requestToken
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Token Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+  /users:
+    get:
+      tags:
+      - List all users
+      summary: List all users
+      operationId: listUsers
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Token Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersResponse'
+  /users/{userId}:
+    get:
+      tags:
+      - Get user by ID
+      summary:  Get user by ID
+      operationId: getUser
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: User found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+  /users/{userId}/locations:
+    get:
+      tags:
+      - Get locations of a user
+      summary:  Get locations of a user
+      operationId: getUserLocations
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/DateQuery'
+        
+      responses:
+        "200":
+          description: Locations listed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersResponse'
+
+components:
+  schemas:
+    TokenResponse:
+      type: string
+      example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsImlhdCI6MTY0MzA3NTY5MiwiZXhwIjoxNjQzMDc5MjkyLCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay0wdzM4dkB2b2ljZS1vdmVyLWFuZHJvaWQtc3RhZ2luZy5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsInN1YiI6ImZpcmViYXNlLWFkbWluc2RrLTB3Mzh2QHZvaWNlLW92ZXItYW5kcm9pZC1zdGFnaW5nLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwidWlkIjoiODc0MTciLCJjbGFpbXMiOnsidXVpZCI6IjNmY2ZlMjcwLWQ4NjAtMTFlYS05MGE3LWZmNTUxY2M1ZWE1MSIsInVpZCI6ODc0MTcsInVzZXJuYW1lIjoidXNlcjNAY29tcGFueWFiYy5jb20iLCJjaGFubmVsSWRzIjpbNjMyNSwxNDc0M10sInByaXZpbGVnZSI6MCwibmFtZSI6InVzZXIzIiwiY29tcGFueSI6ImNvbXBhbnlhYmMuY29tIn19.zi2ybfLksACNTq-DULvyU36JrVLDd0oDYZAMJI86CwGruszJYbQ4PmQzER6rTI4tYvdjmHOJcsGXWk4nbDgTeusvHwsh9RQV3uLKfH7wdfSU8ajNm9ezQH0p2eKQySsZTbV851IMJzRYfI_JRqMkkhD1nCnhnv_jrwewlTTc1MAOyCIRNNEfbpE3fEbcPdqyCPDvf2z6hktz3DQZrBa7zCAgBCWYB72RJvyk2CTahW26FwwSFFJA-garm5S1G2ukL_vnniAnpEYY2oWgptgVjZXbst61kgXl2ZhzV2x3t5M817yDW-EO3Gj31CizoY0d5iohpc6eW6-Po8YWoWa5JQ"
+    UsersResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            example: 196833
+          username:
+            type: string
+            example: user4@companyabc.com
+          lat:
+            type: string
+            example: -7.1001126
+          lng:
+            type: string
+            example: 110.4056344
+          address:
+            type: string
+            example: Jalan Fajar Raya no 10
+          updatedAt:
+            type: string
+            example: 1636525561000
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 196833
+        username:
+          type: string
+          example: user4@companyabc.com
+        lat:
+          type: string
+          example: -7.1001126
+        lng:
+          type: string
+          example: 110.4056344
+        address:
+          type: string
+          example: Jalan Fajar Raya no 10
+        updatedAt:
+          type: string
+          example: 1636525561000
+    ArrayOfErrors:
+      type: array
+      nullable: true
+      items:
+        oneOf:
+        - type: string
+        - type: object
+  parameters:
+    IdempotencyKey:
+      name: idempotency-key
+      in: header
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    DateQuery:
+      in: query
+      name: date
+      schema:
+        type: string
+        example: 20200803
+  securitySchemes:
+    BasicAuth:
+      type: http
+      description: Use api_key as username and leave password blank
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      name: API-KEY
+      in: header

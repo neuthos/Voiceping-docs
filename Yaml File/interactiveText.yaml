@@ -1,0 +1,393 @@
+openapi: 3.0.0
+info:
+  title: Interactive Text Api
+  description: For Union Gas
+  version: 0.0.3
+servers:
+- url: https://voiceoverping.net
+paths:
+  /v2/oauth/token:
+    post:
+      tags:
+      - Get Access Token
+      summary: Get Access Token
+      operationId: getAccessToken
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: 
+                username: 
+                  type: string
+                  example: <api-user-username>
+                password: 
+                  type: string
+                  example: <api-user-password>
+                client_id: 
+                  type: string
+                  example: 2359media
+                client_secret: 
+                  type: string
+                  example: 2359admin
+                grant_type: 
+                  type: string
+                  example: password
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getAccessTokenResponse'
+  /api/v2/allchannels:
+    get:
+      tags:
+      - List Channels
+      summary: List Channels
+      operationId: listChannels
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: Bearer <uuid_token>
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listChannelsResponse'
+  /api/v2/users:
+    get:
+      tags:
+      -  List Users
+      summary: List Users
+      operationId: listUsers
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: Bearer <uuid_token>
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/usersResponse'
+  /api/v2/search_exact:
+    get:
+      tags:
+      - Get User By Username
+      summary:  Get User By Username
+      operationId:  getUserByUsername
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: Bearer <uuid_token>
+      - in: query
+        name: username
+        allowReserved: true
+        schema:
+          type: string
+          example: 11@uniongas.com
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userByUsername'
+  /api/v1/bot/talk:
+    post:
+      tags:
+      - Send Text Message 
+      summary:  Send Text Message 
+      operationId: sendTextMessage
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: 
+                  channel_type: 
+                    type: string
+                    example: GROUP
+                  to: 
+                    type: string
+                    example: 13
+                  message:
+                    type: string
+                    example: test bot api 1-1 3
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: Bearer <uuid_token>
+      responses:
+        "200":
+          description: OK
+  /api/v1/bot/interactive:
+    post:
+      tags:
+      - Send Interactive Text
+      summary: Send text messages to channels or private messages to users. 
+      operationId: sendInteractiveText 
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: 
+                  message: 
+                    type: object
+                    properties:
+                      title: 
+                        type: string
+                        example: Hello, do you want to take this order XYZ?
+                      options: 
+                        type: array
+                        items: 
+                          type: object
+                          properties: 
+                            title:
+                              type: string
+                              example: Yes
+                            option_id:
+                              type: string
+                              example: opt-a
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string   
+          example: Bearer <uuid_token>
+      - in: query
+        name: to
+        schema:
+          type: string
+      - in: query
+        name: channel_type
+        schema:
+          type: string
+      - in: query
+        name: client_id
+        schema:
+          type: string
+      - in: query
+        name: client_secret
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message_id: 
+                    type: string
+                    example: 0_23_1227_23451_1539141574405.txt
+  /api/v1/presence:
+    get:
+      tags:
+      - Presence
+      summary:  Get timestamp of last reported online user
+      operationId: Presence
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: Bearer <uuid_token>
+      responses:
+        "200":
+          description: OK 
+          content: 
+            application/json:
+              schema: 
+                type: object
+                properties: 
+                  lastSeenAt:
+                    type: integer
+                    example: 1624330923
+                  userId: 
+                    type: integer
+                    example: 79166
+components:
+  schemas:
+    getAccessTokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+          example: <access_token>
+        username:
+          type: string
+          example: username
+        fullname:
+          type: string
+          example: user full_name
+        uuid:
+          type: string
+          example: <user_uuid>
+        privilege:
+          type: string
+          example: admin
+        avatar_url:
+          type: string
+          example: <user_avatar_url>
+        email:
+          type: string
+          example: user@mail.com
+        company:
+          type: string
+          example: usercompanny.com
+        phone:
+          type: string
+          example: null
+        id:
+          type: integer
+          example: 5
+        socket_url:
+          type: string
+          example: wss://5759media-router.voiceoverping.net
+        status:
+          type: string
+          example: online
+        statusValue:
+          type: integer
+          example: 1
+        token_type:
+          type: string
+          example: Bearer         
+    listChannelsResponse:
+      type: object
+      properties: 
+          channels: 
+            type: array
+            items:
+              type: object
+              properties: 
+                id: 
+                  type: integer
+                  example: 5
+                name: 
+                  type: string
+                  example: my chanel
+                users: 
+                  type: array
+                  items: 
+                    type: object
+    usersResponse: 
+      type: array
+      items: 
+        type: object
+        properties: 
+            id: 
+              type: integer
+              example: 55
+            username:
+              type: string
+              example: 7705@smarttrial.com
+            channels: 
+              type: array
+              items: 
+                type: object
+    userByUsername:
+      type: object
+      properties:
+        username:
+          type: string
+          example: 11@uniongas.com
+        fullname: 
+          type: string
+          example: 11
+        uuid: 
+          type: string
+          example: fdd5d7e0-6765-11eb-8284-a93ad448506b
+        network: 
+          type: object
+          properties: 
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: 2359media
+            router_url:
+              type: string
+              example: wss://2359media-router.voiceoverping.net
+        privilege: 
+          type: string
+          example: user
+        avatar_url: 
+          type: string
+          example: https://2359media.voiceoverping.net/images/generic_avatar.jpg
+        email: 
+          type: string
+          example: 11@uniongas.com
+        company:
+          type: string
+          example: uniongas.com
+        companyreseller:
+          type: string
+          example:
+        phone: 
+          type: string
+          example:
+        id: 
+          type: integer
+          example: 7732
+                        
+                      
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          

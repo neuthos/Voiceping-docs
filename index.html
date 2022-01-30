@@ -5,8 +5,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Voiceping-docs</title>
-
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 'Raleway', sans-serif;
+    }
     .button {
       background-color: #dde0e3; /* Green */
       border: none;
@@ -22,23 +30,105 @@
 
     a {
       text-decoration: none;
+      color: black
+    }
+
+    h1 {
+      font-size: 48px;
+      font-weight: 400;
+    }
+
+    h3 {
+      font-size: 20px;
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    .navbar {
+      width: 100vw;
+      height: 77px;
+      background-color: white;
+      border-bottom: 5px solid #c7c7c7;
+      display: flex; 
+      align-items: center;
+      gap: 5px;
+      padding-left: 100px;
+    }
+
+    .card-container {
+      width: 100%;
+      display: flex; 
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px
+    }
+
+    .card {
+      width: 90%;
+      height: 50px;
+      border-radius: 10px;
+      display: flex;
+      border: 1px solid #ddd;
+      align-items: center;
+      padding: 20px;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      background-color: whitesmoke
     }
 
   </style>
 </head>
 <body>
+  
+  <div style="width: 100vw; height: 100vh; display: flex; flex-direction: column; align-items: center;">
+    <navbar class="navbar">
+        <img alt="logo"  src="https://static.wixstatic.com/media/dd825c_434d0c62811642999f4b7a4f96a19516~mv2.png/v1/fill/w_183,h_51,al_c,q_85,usm_0.66_1.00_0.01/135469_133209.webp" />
+    </navbar>
+    <h1 style="margin: 30px 0px 30px 0px;">VoicePing APi</h1>
 
-  <div style="width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; gap: 40px">
-      <a href="conversation.html">
-        <button class="button">
-          Conversation
-        </button>
+    <div class="card-container">
+      <a href="location.html" class="card">
+        <h3>Location</h3>
+        <i class="fas fa-chevron-right"></i>
       </a>
-    <a href="location.html">
+      <a href="conversation.html" class="card">
+        <h3>Conversation</h3>
+        <i class="fas fa-chevron-right"></i>
+      </a>
+      <a href="interactive.html" class="card">
+        <h3>Interactive Text</h3>
+        <i class="fas fa-chevron-right"></i>
+      </a>
+    </div>
+
+
+    <!-- <div class="card-container">
+      <div class="card">
+        <h3>Location API</h3>
+        <a href="location.html">
+          <button class="button">
+            Open
+          </button>
+        </a>
+      </div>
+      <div class="card">a</div>
+      <div class="card">a</div>
+    </div> -->
+    <!-- <a href="conversation.html">
       <button class="button">
-        Location
+        Conversation
       </button>
     </a>
+    
+    <a href="interactive.html">
+      <button class="button">
+        Interactive
+      </button>
+    </a> -->
   </div>
 
 </body>
